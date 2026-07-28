@@ -1,6 +1,6 @@
 ---
 import MpakLogo from '../components/MpakLogo.astro';
-import { siteConfig, SITE_URL } from '../config/site';
+import { FONTS_HREF, siteConfig, SITE_URL } from '../config/site';
 import '../styles/global.css';
 
 interface Props {
@@ -85,20 +85,15 @@ const navLinks = [
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
     <meta name="twitter:image:alt" content={ogImageAlt} />
-    <meta name="twitter:creator" content="@mpak_dev" />
-
-    <link rel="alternate" type="application/rss+xml" title="mpak - New Packages" href="/feed.xml" />
+    <meta name="twitter:creator" content="@nimblebraininc" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=optional"
-    />
+    <link rel="stylesheet" href={FONTS_HREF} />
 
     {
       schemaBlocks.map((block) => (
-        <script type="application/ld+json" set:html={JSON.stringify(block)} />
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(block)} />
       ))
     }
   </head>

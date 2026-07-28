@@ -4,6 +4,7 @@ import sitemap from '@astrojs/sitemap';
 import starlight from '@astrojs/starlight';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
+import { FONTS_HREF } from './src/config/site';
 
 // Docs live under src/content/docs/docs/ so Starlight serves them at /docs/*,
 // leaving the site root to the marketing pages in src/pages/.
@@ -26,10 +27,7 @@ export default defineConfig({
       head: [
         {
           tag: 'link',
-          attrs: {
-            rel: 'stylesheet',
-            href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap',
-          },
+          attrs: { rel: 'stylesheet', href: FONTS_HREF },
         },
       ],
       sidebar: [

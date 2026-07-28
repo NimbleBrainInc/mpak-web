@@ -61,6 +61,8 @@ Allow: /
 User-agent: FacebookBot
 Allow: /
 
-# Sitemap, feed, and LLM-friendly content
+# Two sitemaps, one per origin. This site generates sitemap-index.xml for the
+# marketing and docs routes; the registry app owns sitemap.xml, which carries
+# the package pages. Listing only one would drop the other origin's URLs.
 Sitemap: https://mpak.dev/sitemap-index.xml
-Feed: https://mpak.dev/feed.xml
+Sitemap: https://mpak.dev/sitemap.xml

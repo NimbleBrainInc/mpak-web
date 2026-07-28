@@ -48,7 +48,7 @@ export function generateOrganizationSchema() {
     logo: `${BASE_URL}/favicon.svg`,
     description:
       'The package manager for MCP bundles. Discover, install, and publish Model Context Protocol servers.',
-    sameAs: [siteConfig.github.repo, 'https://twitter.com/mpak_dev'],
+    sameAs: [siteConfig.github.repo, 'https://x.com/nimblebraininc'],
   };
 }
 
@@ -61,11 +61,12 @@ export function generateWebSiteSchema() {
     '@type': 'WebSite',
     name: 'mpak',
     url: BASE_URL,
+    // Search is the registry app's route, not this site's — / is static here.
     potentialAction: {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: `${BASE_URL}/?search={search_term_string}`,
+        urlTemplate: `${BASE_URL}/bundles/?search={search_term_string}`,
       },
       'query-input': 'required name=search_term_string',
     },

@@ -6,6 +6,13 @@ const env = import.meta.env;
 
 export const SITE_URL = (env.PUBLIC_SITE_URL || 'https://mpak.dev').replace(/\/$/, '');
 
+/**
+ * Web font stylesheet, shared by the marketing layout and the Starlight docs
+ * config so both sides of the routing boundary paint text the same way.
+ */
+export const FONTS_HREF =
+  'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=optional';
+
 export const siteConfig = {
   siteUrl: SITE_URL,
   // Docs are same-site now, so this is a path rather than an absolute URL.

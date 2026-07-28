@@ -18,6 +18,8 @@ from `mpak.dev` behind path-based routing, so links between them are root-relati
 npm install
 npm run dev      # http://localhost:4321
 npm run build    # must succeed with zero errors
+npm run check    # astro check — types and template diagnostics
+npm run test     # vitest — JSON-LD builders
 npm run preview
 ```
 
@@ -45,9 +47,15 @@ marketing pages.
 
 ## Design system
 
-`src/styles/global.css` is the same Tailwind v4 `@theme` block the registry app uses. Keeping the
-two identical is what makes shared chrome render the same across the routing boundary — if you
-change a token here, change it there.
+`src/styles/global.css` carries the registry app's Tailwind v4 `@theme` block plus the handful of
+component classes the marketing pages actually use — `workshop-card`, `workshop-card-gold`,
+`workshop-input`, `skip-to-content`. The app's badge, select, category, prose, and skeleton systems
+are deliberately absent: Tailwind prunes unused `@theme` tokens but not hand-written rules, so
+carrying them would ship several KB of unreachable CSS on every page.
+
+What has to stay in step with `apps/web` is the `@theme` block and the header/footer chrome, since
+those straddle the routing boundary and a visitor crosses it without a reload. The component
+classes below it are free to diverge.
 
 ## Icons
 
