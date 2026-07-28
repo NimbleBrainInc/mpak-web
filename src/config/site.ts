@@ -8,7 +8,9 @@ export const SITE_URL = (env.PUBLIC_SITE_URL || 'https://mpak.dev').replace(/\/$
 
 export const siteConfig = {
   siteUrl: SITE_URL,
-  docsUrl: '/docs/',
+  // Docs are same-site now, so this is a path rather than an absolute URL.
+  // No trailing slash: callers append their own (`${docsUrl}/bundles/manifest/`).
+  docsUrl: '/docs',
   operator: {
     name: env.PUBLIC_OPERATOR_NAME || 'NimbleBrain Inc.',
     shortName: env.PUBLIC_OPERATOR_SHORT_NAME || 'NimbleBrain',
