@@ -49,14 +49,13 @@ marketing pages.
 two identical is what makes shared chrome render the same across the routing boundary — if you
 change a token here, change it there.
 
-## Copy parity
+## Icons
 
-Marketing copy is a verbatim port of the React pages it replaces. When editing a ported page,
-diff the rendered text against production before merging:
+Every raster icon is generated from `public/favicon.svg` — an orange `#f59e0b` disc with a black
+`#0c0a0f` `m`. The tab icons (`favicon-16x16`, `favicon-32x32`, `favicon.ico`) are full-bleed and
+transparent. `apple-touch-icon` and the two `android-chrome` sizes sit on a solid `#0c0a0f`, and
+the Android pair is scaled to two thirds so the disc stays inside the safe zone the manifest's
+`"purpose": "any maskable"` requires — full-bleed artwork gets clipped by Android's mask.
 
-```bash
-python3 scripts/textdiff.py https://mpak.dev/about/ dist/about/index.html
-```
-
-Expect the only reported delta to be the mobile navigation, which the React app renders
-conditionally and this site renders hidden.
+Verify a change with `npm run build`, not by eye: a long-running `astro dev` can serve a stale
+Tailwind scan after pages are added, which looks like broken styling that the build does not have.
