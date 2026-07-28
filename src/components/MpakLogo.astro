@@ -1,0 +1,48 @@
+---
+interface Props {
+  iconSize?: number;
+  class?: string;
+}
+
+const { iconSize = 28, class: className } = Astro.props;
+---
+
+<span class:list={['inline-flex items-center gap-2.5', className]}>
+  <svg
+    aria-hidden="true"
+    width={iconSize}
+    height={iconSize}
+    viewBox="0 0 64 64"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    class="text-accent-gold-400"
+  >
+    <circle
+      cx="32"
+      cy="32"
+      r="29"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-dasharray="4 3"
+      opacity="0.35"></circle>
+    <circle
+      cx="32"
+      cy="32"
+      r="24"
+      fill="currentColor"
+      opacity="0.12"
+      stroke="currentColor"
+      stroke-width="2"></circle>
+    <circle cx="32" cy="32" r="18" stroke="currentColor" stroke-width="1" opacity="0.25"></circle>
+    <text
+      x="32"
+      y="39"
+      text-anchor="middle"
+      font-family="'Space Grotesk', system-ui, sans-serif"
+      font-weight="700"
+      font-size="24"
+      fill="currentColor">m</text
+    >
+  </svg>
+  <span class="text-[22px] font-bold tracking-tight text-mpak-gray-900">mpak</span>
+</span>
