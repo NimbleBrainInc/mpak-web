@@ -46,11 +46,11 @@ Publishers add a `manifest.json` to their MCP server repo and the `mcpb-pack` Gi
 
 ## Documentation
 
-- [Browse Bundles](https://mpak.dev/bundles): Search and discover MCP server bundles
-- [Security Certification](https://mpak.dev/security): MTF certification levels and security domains
-- [Publish Bundles](https://mpak.dev/publish/bundles): Guide to publishing MCP servers
-- [Full Documentation](https://mpak.dev/docs): Complete mpak documentation
-- [About](https://mpak.dev/about): About mpak and NimbleBrain
+- [Browse Bundles](https://mpak.dev/bundles/): Search and discover MCP server bundles
+- [Security Certification](https://mpak.dev/security/): MTF certification levels and security domains
+- [Publish Bundles](https://mpak.dev/publish/bundles/): Guide to publishing MCP servers
+- [Full Documentation](https://mpak.dev/docs/): Complete mpak documentation
+- [About](https://mpak.dev/about/): About mpak and NimbleBrain
 
 ## Optional
 
@@ -59,4 +59,4 @@ Publishers add a `manifest.json` to their MCP server repo and the `mcpb-pack` Gi
 - [mcpb-pack GitHub Action](https://github.com/NimbleBrainInc/mcpb-pack): Build and publish action
 - [mpak Security Scanner](https://github.com/NimbleBrainInc/mpak): MTF security scanner
 - [MTF Specification](https://mpaktrust.org): Full mpak Trust Framework specification
-- [Contact](https://mpak.dev/contact): Contact the mpak team
+- [Contact](https://mpak.dev/contact/): Contact the mpak team

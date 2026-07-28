@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { SITE_URL } from '../config/site';
+import { SITE_URL, siteConfig } from '../config/site';
 import {
   generateBreadcrumbSchema,
   generateCLIToolSchema,
@@ -116,8 +116,10 @@ describe('search target', () => {
     );
   });
 
+  // An allowlist, not a denylist: asserting the absence of one dead URL would
+  // pass for every dead URL added after it.
   it('advertises only reachable social profiles', () => {
     const schema = generateOrganizationSchema();
-    expect(schema.sameAs).not.toContain('https://twitter.com/mpak_dev');
+    expect(schema.sameAs).toEqual([siteConfig.github.repo, 'https://x.com/nimblebraininc']);
   });
 });

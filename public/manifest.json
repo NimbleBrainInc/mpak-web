@@ -37,13 +37,13 @@
       "name": "Browse Bundles",
       "short_name": "Bundles",
       "description": "Browse available MCP server bundles",
-      "url": "/bundles"
+      "url": "/bundles/"
     },
     {
       "name": "Publish Bundle",
       "short_name": "Publish",
       "description": "Publish a new MCP server bundle",
-      "url": "/publish"
+      "url": "/publish/"
     }
   ]
 }

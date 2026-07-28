@@ -6,33 +6,18 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description: string;
-  canonical?: string;
-  ogImage?: string;
-  ogImageAlt?: string;
-  ogType?: 'website' | 'article' | 'product';
   keywords?: string[];
-  noindex?: boolean;
   schema?: object | object[];
 }
 
 const SITE_NAME = 'mpak';
-const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;
-const DEFAULT_OG_IMAGE_ALT = 'mpak - The secure registry for MCP servers';
+const OG_IMAGE = `${SITE_URL}/og-image.png`;
+const OG_IMAGE_ALT = 'mpak - The secure registry for MCP servers';
 
-const {
-  title,
-  description,
-  canonical,
-  ogImage = DEFAULT_OG_IMAGE,
-  ogImageAlt = DEFAULT_OG_IMAGE_ALT,
-  ogType = 'website',
-  keywords = [],
-  noindex = false,
-  schema,
-} = Astro.props;
+const { title, description, keywords = [], schema } = Astro.props;
 
 const fullTitle = title === SITE_NAME ? title : `${title} | ${SITE_NAME}`;
-const canonicalUrl = canonical ?? new URL(Astro.url.pathname, SITE_URL).href;
+const canonicalUrl = new URL(Astro.url.pathname, SITE_URL).href;
 const schemaBlocks = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
 const year = new Date().getFullYear();
 
@@ -54,7 +39,7 @@ const navLinks = [
     <meta name="description" content={description} />
     {keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
     <meta name="author" content="mpak" />
-    <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
+    <meta name="robots" content="index, follow" />
     <link rel="canonical" href={canonicalUrl} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -68,14 +53,14 @@ const navLinks = [
     <meta name="msapplication-TileColor" content="#0c0a0f" />
     <meta name="msapplication-config" content="/browserconfig.xml" />
 
-    <meta property="og:type" content={ogType} />
+    <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:image" content={OG_IMAGE} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta property="og:image:alt" content={OG_IMAGE_ALT} />
     <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:locale" content="en_US" />
 
@@ -83,8 +68,8 @@ const navLinks = [
     <meta name="twitter:url" content={canonicalUrl} />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
-    <meta name="twitter:image:alt" content={ogImageAlt} />
+    <meta name="twitter:image" content={OG_IMAGE} />
+    <meta name="twitter:image:alt" content={OG_IMAGE_ALT} />
     <meta name="twitter:creator" content="@nimblebraininc" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />

@@ -20,6 +20,10 @@ npm run dev      # http://localhost:4321
 npm run build    # must succeed with zero errors
 npm run check    # astro check — types and template diagnostics
 npm run test     # vitest — JSON-LD builders
+
+# typescript is held at 6.x on purpose. astro check needs the programmatic
+# compiler API, which TypeScript 7's native compiler does not expose yet:
+# https://github.com/withastro/roadmap/discussions/1321
 npm run preview
 ```
 

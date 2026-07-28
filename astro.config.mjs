@@ -4,12 +4,12 @@ import sitemap from '@astrojs/sitemap';
 import starlight from '@astrojs/starlight';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
-import { FONTS_HREF } from './src/config/site';
+import { FONTS_HREF, SITE_URL } from './src/config/site';
 
 // Docs live under src/content/docs/docs/ so Starlight serves them at /docs/*,
 // leaving the site root to the marketing pages in src/pages/.
 export default defineConfig({
-  site: 'https://mpak.dev',
+  site: SITE_URL,
   trailingSlash: 'always',
   vite: {
     plugins: [tailwindcss()],

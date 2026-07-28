@@ -4,7 +4,17 @@
  */
 const env = import.meta.env;
 
-export const SITE_URL = (env.PUBLIC_SITE_URL || 'https://mpak.dev').replace(/\/$/, '');
+/**
+ * The one place the site's origin is declared. astro.config.mjs feeds this to
+ * `site:`, which is what the sitemap and Starlight's canonicals derive from —
+ * so this constant, the sitemap, and the docs pages cannot disagree.
+ *
+ * Deliberately not env-overridable. A self-hoster deploys the registry app, not
+ * this marketing site, so an override here would be a knob with no operator:
+ * `import.meta.env` is empty when astro.config.mjs loads, which is exactly how
+ * the sitemap and docs ended up advertising a different host than the pages.
+ */
+export const SITE_URL = 'https://mpak.dev';
 
 /**
  * Web font stylesheet, shared by the marketing layout and the Starlight docs

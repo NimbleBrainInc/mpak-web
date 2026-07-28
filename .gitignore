@@ -5,6 +5,10 @@ dist/
 # dependencies
 node_modules/
 
+# agent worktrees, which nest a full copy of the repo and would otherwise be
+# committed by `git add -A` and collected twice by vitest
+.claude/
+
 # environment
 .env
 .env.production
