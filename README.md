@@ -11,23 +11,33 @@ nginx origin, and this site is not attached to it. The split below happens at cu
 | Host | Serves | From |
 | --- | --- | --- |
 | `mpak.dev` | `/`, `/about`, `/contact`, `/privacy`, `/terms`, `/security*`, `/publish*`, `/docs/*` | this repo, via GitHub Pages |
-| `registry.mpak.dev` | `/`, `/packages/*`, `/login`, `/my-packages` — and the API at `/app`, `/v1`, `/v0.1` | `mpak/code` → `apps/web` |
-| `docs.mpak.dev` | 301 to `mpak.dev/docs` | — |
+| `registry.mpak.dev` | `/`, `/bundles`, `/packages/*`, `/login`, `/my-packages` — and the API at `/app`, `/v1`, `/v0.1` | `mpak/code` → `apps/web` |
+| `docs.mpak.dev` | 301 to `mpak.dev/docs` ([mpak#163](https://github.com/NimbleBrainInc/mpak/issues/163)) | — |
 
-Because the two live on different hosts, links from here into the registry are absolute
-(`siteConfig.marketingUrl`'s counterpart on the app side), not root-relative.
+**This site's links into the registry are still root-relative and must be migrated first.**
+Every page's nav emits `href="/bundles/"` and `href="/login/"`, and two badge snippets in the
+docs point at `https://mpak.dev/packages/…`. Those resolve today because one origin serves
+everything. Once `mpak.dev` is Pages, they land on a host with no such routes — the nav breaks
+on all nine pages, and the badge snippets keep sending publishers to a 404 from their own
+READMEs long after. The registry app already does this correctly in the other direction
+(`siteConfig.marketingUrl`); this side has no counterpart yet.
 
 > [!WARNING]
-> Do not attach `mpak.dev` in Settings → Pages until this returns the registry, not a 404:
+> Two preconditions before `mpak.dev` points at Pages, in order:
 >
-> ```
-> curl -sI https://registry.mpak.dev/packages/@nimblebraininc/echo
-> ```
+> 1. **The registry links here are absolute.** No `href="/bundles/"` or `href="/login/"` left
+>    in the build, and the docs badge snippets name `registry.mpak.dev`.
+> 2. **The registry answers on its own host** — this returns the app, not a 404:
+>    ```
+>    curl -sI https://registry.mpak.dev/packages/@nimblebraininc/echo
+>    ```
 >
-> GitHub Pages cannot proxy, so while `mpak.dev` still serves the registry, attaching it
-> makes this repo's build answer `/packages/*` and `/login` with its own 404 and the
-> product goes dark. The check is the deploy, not a merge — the code that moves the
-> registry is merged well before the pods are running it.
+> Then attach the custom domain *and* repoint DNS. Attaching alone does not move traffic;
+> the DNS record is what does, and either step is reversible on a 60-second TTL.
+>
+> Pages cannot proxy, so doing this while `mpak.dev` still serves the registry makes this
+> repo's build answer `/packages/*` and `/login` with its own 404. The gate is the deploy,
+> not a merge — the code that moves the registry merges well before pods are running it.
 
 ## Develop
 

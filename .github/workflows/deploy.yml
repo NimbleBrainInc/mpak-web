@@ -5,10 +5,11 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# Scoped per job rather than workflow-wide: the build runs `npm ci`, which
+# executes dependency lifecycle scripts, and that should not happen with a token
+# that can publish to Pages.
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 # Let a running deploy finish rather than cancelling it — a half-deployed site
 # is worse than a slightly stale one.
@@ -42,6 +43,9 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
