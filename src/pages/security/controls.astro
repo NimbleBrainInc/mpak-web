@@ -1,0 +1,190 @@
+---
+import { SITE_URL } from '../../config/site';
+import { DOMAINS, LEVEL_CLASSES } from '../../data/security-controls';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { generateBreadcrumbSchema, generateItemListSchema } from '../../lib/schema';
+
+const controlItems = DOMAINS.flatMap((d) =>
+  d.controls.map((c) => ({
+    name: `${c.id}: ${c.name}`,
+    url: `${SITE_URL}/security/controls/#${c.id}`,
+  })),
+);
+
+const schema = [
+  generateBreadcrumbSchema([
+    { name: 'Home', url: `${SITE_URL}/` },
+    { name: 'Security', url: `${SITE_URL}/security/` },
+    { name: 'Controls', url: `${SITE_URL}/security/controls/` },
+  ]),
+  generateItemListSchema(controlItems, 'mpak Trust Framework Security Controls'),
+];
+
+const totalControls = DOMAINS.reduce((sum, d) => sum + d.controls.length, 0);
+const mcpSpecificControls = DOMAINS.reduce(
+  (sum, d) => sum + d.controls.filter((c) => c.mcpSpecific).length,
+  0,
+);
+---
+
+<BaseLayout
+  title="Security Controls - mpak Trust Framework"
+  description="Complete list of 25 security controls in the mpak Trust Framework (MTF). Each control has clear pass/fail criteria and remediation guidance."
+  keywords={[
+    'mpak controls',
+    'security controls',
+    'mcp security',
+    'vulnerability scanning',
+    'supply chain security',
+  ]}
+  schema={schema}
+>
+  <div class="min-h-screen bg-surface-base">
+    <div class="bg-surface border-b border-white/[0.08]">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div>
+          <h1 class="text-3xl sm:text-4xl font-bold text-mpak-gray-900 mb-3">Security Controls</h1>
+          <p class="text-lg text-mpak-gray-600 max-w-2xl">
+            {totalControls} controls across 5 security domains.{' '}
+            <span class="text-terminal-error font-medium">{mcpSpecificControls} MCP-specific</span>{
+              ' '
+            } controls address AI attack surfaces.
+          </p>
+        </div>
+
+        <div class="mt-6 flex flex-wrap items-center gap-6 text-sm font-mono">
+          <div class="flex items-center gap-2">
+            <span class="text-mpak-gray-500">levels:</span>
+            {
+              [1, 2, 3, 4].map((level) => (
+                <span
+                  class:list={[
+                    'inline-flex items-center justify-center w-6 h-6 text-xs font-bold rounded border-2',
+                    LEVEL_CLASSES[level - 1]!.legend,
+                  ]}
+                >
+                  {level}
+                </span>
+              ))
+            }
+          </div>
+          <div class="flex items-center gap-2 text-mpak-gray-500">
+            <span class="w-2 h-2 rounded-full bg-terminal-error"></span>
+            <span>mcp-specific</span>
+          </div>
+          <div class="flex items-center gap-1 text-mpak-gray-500">
+            <span class="text-mpak-gray-400">*</span>
+            <span>recommended</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="space-y-16">
+        {
+          DOMAINS.map((domain) => (
+            <section>
+              <div class="flex items-baseline gap-3 mb-2">
+                <h2 class="text-2xl font-semibold text-mpak-gray-900">{domain.name}</h2>
+                <span class="font-mono text-sm text-mpak-gray-400">
+                  {domain.abbrev}-01..{domain.abbrev}-0{domain.controls.length}
+                </span>
+              </div>
+              <p class="text-mpak-gray-600 mb-6 max-w-2xl">{domain.description}</p>
+
+              <div class="bg-surface-raised rounded-lg border border-white/[0.08] divide-y divide-white/[0.08] overflow-hidden">
+                {domain.controls.map((control) => (
+                  <div
+                    id={control.id}
+                    class:list={[
+                      'relative px-5 py-4 hover:bg-surface-overlay/50 transition-colors',
+                      control.mcpSpecific ? 'bg-terminal-error/[0.02]' : '',
+                    ]}
+                  >
+                    {control.mcpSpecific && (
+                      <div class="absolute left-0 top-0 bottom-0 w-0.5 bg-terminal-error" />
+                    )}
+
+                    <div class="flex flex-col sm:flex-row sm:items-start gap-3">
+                      <div class="shrink-0 w-16">
+                        <span
+                          class:list={[
+                            'inline-block font-mono text-sm font-medium',
+                            control.mcpSpecific ? 'text-terminal-error' : 'text-mpak-gray-500',
+                          ]}
+                        >
+                          {control.id}
+                        </span>
+                      </div>
+
+                      <div class="flex-1 min-w-0">
+                        <div class="flex items-start justify-between gap-4">
+                          <div>
+                            <h3 class="font-semibold text-mpak-gray-900">
+                              {control.name}
+                              {control.recommended && <span class="text-mpak-gray-400 ml-1">*</span>}
+                              {control.legal && (
+                                <span class="ml-2 text-xs font-normal text-mpak-gray-500">
+                                  legal
+                                </span>
+                              )}
+                            </h3>
+                            <p class="text-sm text-mpak-gray-600 mt-1 leading-relaxed">
+                              {control.description}
+                            </p>
+                          </div>
+
+                          <div class="flex items-center gap-1 shrink-0">
+                            {[1, 2, 3, 4].map((level) => {
+                              const active = control.levels.includes(level);
+                              return (
+                                <span
+                                  class:list={[
+                                    'inline-flex items-center justify-center w-5 h-5 text-xs font-mono rounded',
+                                    active
+                                      ? `font-bold ${LEVEL_CLASSES[level - 1]!.active}`
+                                      : 'text-mpak-gray-400',
+                                  ]}
+                                >
+                                  {level}
+                                </span>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          ))
+        }
+      </div>
+
+      <div class="mt-16 pt-8 border-t border-white/[0.08]">
+        <div
+          class="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center"
+        >
+          <a
+            href="/security/"
+            class="inline-flex items-center gap-2 text-accent-gold-400 hover:text-accent-gold-500 font-medium"
+          >
+            <span aria-hidden="true">&larr;</span>
+            Certification Overview
+          </a>
+          <a
+            href="https://mpaktrust.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 text-sm text-mpak-gray-500 hover:text-mpak-gray-700"
+          >
+            Full MTF Specification
+            <span aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

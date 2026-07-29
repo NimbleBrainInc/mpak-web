@@ -1,0 +1,294 @@
+---
+import MpakLogo from '../components/MpakLogo.astro';
+import { FONTS_HREF, siteConfig, SITE_URL } from '../config/site';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  keywords?: string[];
+  schema?: object | object[];
+}
+
+const SITE_NAME = 'mpak';
+const OG_IMAGE = `${SITE_URL}/og-image.png`;
+const OG_IMAGE_ALT = 'mpak - The secure registry for MCP servers';
+
+const { title, description, keywords = [], schema } = Astro.props;
+
+const fullTitle = title === SITE_NAME ? title : `${title} | ${SITE_NAME}`;
+const canonicalUrl = new URL(Astro.url.pathname, SITE_URL).href;
+const schemaBlocks = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
+const year = new Date().getFullYear();
+
+const navLinks = [
+  { href: '/bundles/', label: 'Bundles', accent: true },
+  { href: '/publish/', label: 'Publish', accent: true },
+  { href: '/docs/', label: 'Docs', accent: false },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{fullTitle}</title>
+    <meta name="title" content={fullTitle} />
+    <meta name="description" content={description} />
+    {keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
+    <meta name="author" content="mpak" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="shortcut icon" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <meta name="theme-color" content="#0c0a0f" />
+    <meta name="msapplication-TileColor" content="#0c0a0f" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={OG_IMAGE} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={OG_IMAGE_ALT} />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalUrl} />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={OG_IMAGE} />
+    <meta name="twitter:image:alt" content={OG_IMAGE_ALT} />
+    <meta name="twitter:creator" content="@nimblebraininc" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href={FONTS_HREF} />
+
+    {
+      schemaBlocks.map((block) => (
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(block)} />
+      ))
+    }
+  </head>
+  <body>
+    <div class="min-h-screen bg-surface-base flex flex-col">
+      <a href="#main" class="skip-to-content">Skip to main content</a>
+
+      <header
+        class="sticky top-0 z-50 bg-[#0c0a0f]/85 backdrop-blur-md border-b border-white/[0.08]"
+      >
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div class="flex items-center justify-between">
+            <a href="/" class="flex items-center flex-shrink-0">
+              <MpakLogo />
+            </a>
+
+            <nav aria-label="Main navigation" class="hidden md:flex items-center space-x-4">
+              {
+                navLinks.map((link) => (
+                  <a
+                    href={link.href}
+                    class:list={[
+                      'text-sm font-medium text-mpak-gray-600 transition-colors',
+                      link.accent ? 'hover:text-accent-gold-400' : 'hover:text-mpak-gray-800',
+                    ]}
+                  >
+                    {link.label}
+                  </a>
+                ))
+              }
+              <a
+                href={siteConfig.github.repo}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-mpak-gray-500 hover:text-mpak-gray-800 transition-colors"
+                aria-label="GitHub"
+              >
+                <span class="sr-only">GitHub</span>
+                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                  ></path>
+                </svg>
+              </a>
+              <div class="w-px h-5 bg-white/[0.08]" aria-hidden="true"></div>
+              <a
+                href="/login/"
+                class="text-sm font-medium text-mpak-gray-600 hover:text-mpak-gray-900 transition-colors"
+                >Sign In</a
+              >
+              <a
+                href="/login/"
+                class="px-4 py-2 text-sm font-semibold text-mpak-dark bg-accent-gold-400 rounded-lg hover:bg-accent-gold-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:scale-105 transition-all"
+                >Sign Up</a
+              >
+            </nav>
+
+            <div class="flex items-center gap-3 md:hidden">
+              <button
+                type="button"
+                id="mobile-menu-toggle"
+                class="text-mpak-gray-600 hover:text-mpak-gray-900 transition-colors p-1"
+                aria-label="Open menu"
+                aria-expanded="false"
+                aria-controls="mobile-menu"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="w-6 h-6"
+                  data-icon="open"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  class="w-6 h-6 hidden"
+                  data-icon="close"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <nav
+          id="mobile-menu"
+          aria-label="Mobile navigation"
+          class="hidden md:hidden border-t border-white/[0.08] bg-[#0c0a0f]/95 backdrop-blur-md"
+        >
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col space-y-3">
+            {
+              navLinks.map((link) => (
+                <a
+                  href={link.href}
+                  class:list={[
+                    'text-sm font-medium text-mpak-gray-600 transition-colors',
+                    link.accent ? 'hover:text-accent-gold-400' : 'hover:text-mpak-gray-800',
+                  ]}
+                >
+                  {link.label}
+                </a>
+              ))
+            }
+            <a
+              href={siteConfig.github.repo}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-sm font-medium text-mpak-gray-600 hover:text-mpak-gray-800 transition-colors"
+              >GitHub</a
+            >
+            <div class="pt-3 border-t border-white/[0.08] flex flex-col space-y-3">
+              <a
+                href="/login/"
+                class="text-sm font-medium text-mpak-gray-600 hover:text-mpak-gray-900 transition-colors"
+                >Sign In</a
+              >
+              <a
+                href="/login/"
+                class="px-4 py-2 text-sm font-semibold text-mpak-dark bg-accent-gold-400 rounded-lg hover:bg-accent-gold-500 transition-all text-center"
+                >Sign Up</a
+              >
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <main id="main" class="flex-1">
+        <slot />
+      </main>
+
+      <footer role="contentinfo" class="border-t border-white/[0.08] mt-auto bg-surface-base">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p class="text-mpak-gray-500 text-sm">
+              &copy; {year} mpak is a{' '}
+              <a
+                href={siteConfig.operator.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-mpak-gray-700 hover:text-accent-gold-400 transition-colors"
+                >{siteConfig.operator.shortName}</a
+              >{' '} project.
+            </p>
+            <nav aria-label="Footer navigation" class="flex items-center gap-6 text-sm">
+              <a
+                href="/privacy/"
+                class="text-mpak-gray-500 hover:text-mpak-gray-700 transition-colors">Privacy</a
+              >
+              <a href="/terms/" class="text-mpak-gray-500 hover:text-mpak-gray-700 transition-colors"
+                >Terms</a
+              >
+              <a
+                href="/security/"
+                class="text-mpak-gray-500 hover:text-mpak-gray-700 transition-colors">Security</a
+              >
+              <a href="/about/" class="text-mpak-gray-500 hover:text-mpak-gray-700 transition-colors"
+                >About</a
+              >
+              <a
+                href="/contact/"
+                class="text-mpak-gray-500 hover:text-mpak-gray-700 transition-colors">Contact</a
+              >
+              <a
+                href={siteConfig.github.repo}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-mpak-gray-500 hover:text-mpak-gray-700 transition-colors"
+                aria-label="GitHub"
+              >
+                <span class="sr-only">GitHub</span>
+                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                  ></path>
+                </svg>
+              </a>
+            </nav>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      const toggle = document.getElementById('mobile-menu-toggle');
+      const menu = document.getElementById('mobile-menu');
+      const openIcon = toggle?.querySelector('[data-icon="open"]');
+      const closeIcon = toggle?.querySelector('[data-icon="close"]');
+
+      toggle?.addEventListener('click', () => {
+        const isOpen = menu?.classList.toggle('hidden') === false;
+        toggle.setAttribute('aria-expanded', String(isOpen));
+        toggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+        openIcon?.classList.toggle('hidden', isOpen);
+        closeIcon?.classList.toggle('hidden', !isOpen);
+      });
+    </script>
+  </body>
+</html>

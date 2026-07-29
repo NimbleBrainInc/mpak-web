@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+
+      - run: npm ci
+
+      # `npm ci` prints advisories but never fails on them. Round 1 of review
+      # found a high-severity CVE carried by an unused dependency; this is what
+      # catches its recurrence.
+      - run: npm audit --audit-level=high
+
+      - run: npm run build
+
+      - run: npm run check
+
+      - run: npm test

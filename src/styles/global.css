@@ -1,0 +1,257 @@
+@import "tailwindcss";
+
+/* =============================================================================
+   Workshop Design System - mpak.dev
+   Dark theme with dual-accent system: Gold (bundles/security) + Purple (accents)
+
+   The @theme block below is byte-identical to apps/web/src/index.css. Keep it
+   that way: a visitor crosses the routing boundary between the two origins
+   without a reload, so the tokens have to agree. Unused tokens cost nothing —
+   Tailwind prunes them from the build — so there is no reason to trim it.
+   ============================================================================= */
+
+@theme {
+  /* --- Accent Gold (bundles, security, CTAs) --- */
+  --color-accent-gold-50: #fffbeb;
+  --color-accent-gold-100: #fef3c7;
+  --color-accent-gold-200: #fde68a;
+  --color-accent-gold-300: #fcd34d;
+  --color-accent-gold-400: #fbbf24;
+  --color-accent-gold-500: #f59e0b;
+  --color-accent-gold-600: #d97706;
+  --color-accent-gold-glow: rgba(245, 158, 11, 0.12);
+  --color-accent-gold-border: rgba(245, 158, 11, 0.25);
+
+  /* --- Accent Purple (accents) --- */
+  --color-accent-purple: #8b5cf6;
+  --color-accent-purple-50: #f5f3ff;
+  --color-accent-purple-100: #ede9fe;
+  --color-accent-purple-200: #ddd6fe;
+  --color-accent-purple-300: #c4b5fd;
+  --color-accent-purple-400: #a78bfa;
+  --color-accent-purple-500: #8b5cf6;
+  --color-accent-purple-600: #7c3aed;
+  --color-accent-purple-glow: rgba(139, 92, 246, 0.12);
+  --color-accent-purple-border: rgba(139, 92, 246, 0.25);
+
+  /* --- Status accents (kept for compatibility) --- */
+  --color-accent-cyan: #06b6d4;
+  --color-accent-teal: #14b8a6;
+  --color-accent-emerald: #10b981;
+
+  /* --- Terminal colors --- */
+  --color-terminal-success: #34d399;
+  --color-terminal-warning: #fbbf24;
+  --color-terminal-error: #f87171;
+  --color-terminal-info: #60a5fa;
+
+  /* --- Surface system (dark backgrounds) --- */
+  --color-surface-base: #0c0a0f;
+  --color-surface: #13111a;
+  --color-surface-raised: #1a1724;
+  --color-surface-overlay: #211d2e;
+
+  /* --- Workshop neutrals (dark-native) --- */
+  --color-mpak-dark: #0c0a0f;
+  --color-mpak-gray-50: #13111a;
+  --color-mpak-gray-100: #1a1724;
+  --color-mpak-gray-200: #211d2e;
+  --color-mpak-gray-300: #2e2942;
+  --color-mpak-gray-400: #6a657f;
+  --color-mpak-gray-500: #8b859e;
+  --color-mpak-gray-600: #a8a3b8;
+  --color-mpak-gray-700: #cbc7d9;
+  --color-mpak-gray-800: #e8e5f0;
+  --color-mpak-gray-900: #f5f3ff;
+
+  /* --- Borders --- */
+  --color-workshop-border: rgba(255, 255, 255, 0.08);
+  --color-workshop-border-hover: rgba(255, 255, 255, 0.16);
+
+  /* --- Fonts --- */
+  --font-display: "Space Grotesk", system-ui, -apple-system, sans-serif;
+  --font-mono:
+    "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  /* --- Custom animations --- */
+  --animate-cursor-blink: blink 1s step-end infinite;
+  --animate-fade-in-up: fadeInUp 0.6s ease-out;
+}
+
+/* =============================================================================
+   Keyframes
+   ============================================================================= */
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =============================================================================
+   Base Styles
+   ============================================================================= */
+
+body {
+  margin: 0;
+  font-family: var(--font-display);
+  background: var(--color-surface-base);
+  color: #f5f3ff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* =============================================================================
+   Focus Indicators (Keyboard Accessibility)
+   ============================================================================= */
+
+:focus-visible {
+  outline: 2px solid var(--color-accent-gold-400);
+  outline-offset: 2px;
+}
+
+/* Override for inputs that already have focus ring styles */
+.workshop-input:focus-visible {
+  outline: none;
+}
+
+/* Skip-to-content link */
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: 100;
+}
+
+.skip-to-content:focus {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  width: auto;
+  height: auto;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-accent-gold-400);
+  color: var(--color-mpak-dark);
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: 8px;
+  z-index: 100;
+}
+
+/* =============================================================================
+   Reduced Motion
+   ============================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.01ms;
+    scroll-behavior: auto;
+  }
+}
+
+/* Subtle ambient glow on body */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(ellipse at 20% 0%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 0%, rgba(245, 158, 11, 0.04) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* =============================================================================
+   Workshop Card System
+   Bundle cards get a gold top-border on hover
+   ============================================================================= */
+
+.workshop-card {
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-workshop-border);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s ease;
+}
+
+.workshop-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.workshop-card:hover {
+  background: var(--color-surface-overlay);
+  border-color: var(--color-workshop-border-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.workshop-card:hover::before {
+  opacity: 1;
+}
+
+.workshop-card-gold::before {
+  background: linear-gradient(90deg, #f59e0b, #d97706);
+}
+
+/* =============================================================================
+   Workshop Input System
+   ============================================================================= */
+
+.workshop-input {
+  background: var(--color-surface);
+  border: 1px solid var(--color-workshop-border);
+  border-radius: 8px;
+  color: #f5f3ff;
+  font-family: var(--font-display);
+  transition: all 0.2s;
+}
+
+.workshop-input::placeholder {
+  color: var(--color-mpak-gray-400);
+}
+
+.workshop-input:focus {
+  outline: none;
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.12);
+}
+
+/* The registry app's stylesheet continues past this point with the badge,
+   select, category, prose, and skeleton systems. None of them are reachable
+   from the marketing pages, so they are not carried here — the shared contract
+   across the routing boundary is the @theme block plus the chrome above it. */

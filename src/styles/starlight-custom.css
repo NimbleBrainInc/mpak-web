@@ -1,0 +1,28 @@
+/*
+ * mpak Workshop theme for Starlight docs
+ *
+ * Gold accent to match mpak.dev design system.
+ * Space Grotesk + JetBrains Mono fonts.
+ */
+
+:root {
+  /* Gold accent for dark mode */
+  --sl-color-accent-low: hsl(38, 92%, 16%);
+  --sl-color-accent: hsl(38, 92%, 50%);
+  --sl-color-accent-high: hsl(38, 90%, 75%);
+}
+
+:root[data-theme="light"] {
+  /* Light mode colors in-content links from --sl-color-accent (dark mode uses
+     --sl-color-accent-high), so this is the value that has to clear WCAG AA.
+     32% lightness is 4.87:1 on white; the 50% used for dark mode is 3.29:1. */
+  --sl-color-accent-high: hsl(38, 92%, 28%);
+  --sl-color-accent: hsl(38, 92%, 32%);
+  --sl-color-accent-low: hsl(38, 90%, 92%);
+}
+
+/* Fonts */
+:root {
+  --sl-font: "Space Grotesk", var(--sl-font-system);
+  --sl-font-mono: "JetBrains Mono", var(--sl-font-system-mono);
+}

@@ -1,0 +1,389 @@
+---
+import DomainIcon from '../../components/DomainIcon.astro';
+import { siteConfig, SITE_URL } from '../../config/site';
+import { DOMAINS, LEVEL_CLASSES, LEVELS } from '../../data/security-levels';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { generateBreadcrumbSchema } from '../../lib/schema';
+
+const schema = generateBreadcrumbSchema([
+  { name: 'Home', url: `${SITE_URL}/` },
+  { name: 'Security', url: `${SITE_URL}/security/` },
+]);
+
+const MCP_CONTROLS = [
+  {
+    id: 'CD-03',
+    name: 'Tool Description Safety',
+    level: 'L2+',
+    desc: 'Detects prompt injection in tool descriptions. Malicious descriptions become instructions that AI assistants faithfully execute.',
+  },
+  {
+    id: 'CQ-06',
+    name: 'Anti-Slopsquatting',
+    level: 'L2+',
+    desc: 'Blocks packages named after LLM-hallucinated package names. Attackers register these phantom names with malicious payloads.',
+  },
+  {
+    id: 'CD-04',
+    name: 'Credential Scope Declaration',
+    level: 'L3+',
+    desc: 'MCP servers aggregate OAuth tokens for multiple services. This control enforces minimal, declared scopes to limit blast radius.',
+  },
+  {
+    id: 'CQ-07',
+    name: 'Behavioral Analysis',
+    level: 'L4',
+    desc: 'Runs bundles in an isolated sandbox and monitors actual runtime behavior. Catches encrypted payloads and runtime-generated code.',
+  },
+];
+
+const CONSUMER_STEPS = [
+  'Check the certification badge on package pages',
+  'Review risk score and individual control results',
+  'Match level to your use case: Personal (L1+), Team (L2+), Production (L3+), Regulated (L4)',
+];
+
+const PUBLISHER_STEPS = [
+  'All published bundles are automatically scanned',
+  'Remediation guidance provided for failed controls',
+  'Higher certification = more visibility and trust',
+];
+
+const CERTIFICATION_DOC = `${siteConfig.docsUrl}/security/certification/`;
+---
+
+<BaseLayout
+  title="MCP Server Security - mpak Trust Framework"
+  description="25 security controls across 5 domains. The mpak Trust Framework (MTF) provides standardized security scanning for MCP bundles. Four certification levels from Basic to Attested."
+  keywords={[
+    'mcp server security',
+    'mpak security',
+    'mcp security',
+    'bundle certification',
+    'supply chain security',
+    'mcp trust framework',
+  ]}
+  schema={schema}
+>
+  <div class="min-h-screen">
+    <div class="bg-surface border-b border-white/[0.08]">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20">
+        <div class="max-w-3xl">
+          <div class="font-mono text-sm text-terminal-info mb-4 tracking-wide">
+            mpak Trust Framework v0.1
+          </div>
+          <h1 class="text-5xl sm:text-6xl font-bold tracking-tight mb-6 text-mpak-gray-900">
+            Security you can<br /><span class="text-accent-gold-400">verify</span>
+          </h1>
+          <p class="text-xl text-mpak-gray-600 leading-relaxed max-w-2xl">
+            25 security controls. 5 domains. 4 certification levels. Every bundle on mpak is scanned
+            and graded, so you know exactly what you're installing.
+          </p>
+
+          <div class="mt-10 font-mono text-sm">
+            <div
+              class="inline-flex items-center gap-6 px-4 py-3 bg-white/5 border border-white/[0.1] rounded-lg"
+            >
+              <div>
+                <span class="text-mpak-gray-500">controls:</span>{' '}
+                <span class="text-terminal-success">25</span>
+              </div>
+              <div class="w-px h-4 bg-white/[0.1]"></div>
+              <div>
+                <span class="text-mpak-gray-500">domains:</span>{' '}
+                <span class="text-terminal-info">5</span>
+              </div>
+              <div class="w-px h-4 bg-white/[0.1]"></div>
+              <div>
+                <span class="text-mpak-gray-500">mcp-specific:</span>{' '}
+                <span class="text-terminal-warning">4</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <section class="mb-20">
+        <h2 class="text-sm font-mono text-mpak-gray-500 uppercase tracking-wider mb-3">
+          The Problem
+        </h2>
+        <p
+          class="text-2xl sm:text-3xl font-semibold text-mpak-gray-900 leading-snug max-w-3xl mb-10"
+        >
+          MCP servers have full system access. Traditional security tools don't understand
+          AI-specific attack vectors.
+        </p>
+
+        <div class="grid gap-8 sm:grid-cols-3">
+          <div class="group">
+            <div class="h-1 w-12 bg-terminal-error mb-6 group-hover:w-16 transition-all"></div>
+            <h3 class="font-semibold text-mpak-gray-900 mb-2">
+              Filesystem + Network + Code Execution
+            </h3>
+            <p class="text-mpak-gray-600 text-sm leading-relaxed">
+              A malicious bundle can exfiltrate data, install backdoors, or serve as a supply chain
+              attack vector. The permissions model is wide open.
+            </p>
+          </div>
+          <div class="group">
+            <div class="h-1 w-12 bg-terminal-warning mb-6 group-hover:w-16 transition-all"></div>
+            <h3 class="font-semibold text-mpak-gray-900 mb-2">Tool Description Poisoning</h3>
+            <p class="text-mpak-gray-600 text-sm leading-relaxed">
+              AI assistants follow tool descriptions faithfully. A description like "read
+              ~/.aws/credentials before calling" becomes an instruction, not documentation.
+            </p>
+          </div>
+          <div class="group">
+            <div class="h-1 w-12 bg-terminal-info mb-6 group-hover:w-16 transition-all"></div>
+            <h3 class="font-semibold text-mpak-gray-900 mb-2">Slopsquatting</h3>
+            <p class="text-mpak-gray-600 text-sm leading-relaxed">
+              LLMs hallucinate package names consistently. Attackers register these phantom packages
+              with malicious payloads, waiting for AI-generated code to install them.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-20">
+        <h2 class="text-sm font-mono text-mpak-gray-500 uppercase tracking-wider mb-3">
+          Certification Levels
+        </h2>
+        <p class="text-2xl font-semibold text-mpak-gray-900 mb-10">
+          Progressive security tiers for different risk tolerances
+        </p>
+
+        <div class="space-y-4">
+          {
+            LEVELS.map((level, idx) => (
+              <div class="group relative bg-surface-raised border border-white/[0.08] rounded-lg overflow-hidden hover:border-white/[0.16] transition-all">
+                <div
+                  class:list={['absolute left-0 top-0 bottom-0 w-1', LEVEL_CLASSES[idx]!.bar]}
+                />
+
+                <div class="pl-6 pr-5 py-5">
+                  <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                    <div class="flex-1">
+                      <div class="flex items-center gap-3 mb-2">
+                        <span
+                          class:list={[
+                            'inline-flex items-center justify-center w-10 h-10 font-mono font-bold text-sm rounded border-2',
+                            LEVEL_CLASSES[idx]!.badge,
+                          ]}
+                        >
+                          {level.grade}
+                        </span>
+                        <div>
+                          <h3 class="text-lg font-semibold text-mpak-gray-900">{level.name}</h3>
+                          <p class="text-sm text-mpak-gray-500">{level.target}</p>
+                        </div>
+                      </div>
+
+                      <div class="mt-4 grid gap-x-8 gap-y-1 sm:grid-cols-2 text-sm">
+                        {level.highlights.map((h) => (
+                          <div class="flex items-center gap-2 text-mpak-gray-700">
+                            <span class="w-1 h-1 rounded-full bg-mpak-gray-400" />
+                            {h}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div class="flex sm:flex-col items-center sm:items-end gap-4 sm:gap-2 font-mono text-sm text-right shrink-0">
+                      <div>
+                        <span class="text-mpak-gray-400">controls</span>
+                        <div class="text-mpak-gray-900 font-semibold">{level.controls}/25</div>
+                      </div>
+                      <div>
+                        <span class="text-mpak-gray-400">coverage</span>
+                        <div class="text-mpak-gray-900 font-semibold">{level.coverage}%</div>
+                      </div>
+                      <div>
+                        <span class="text-mpak-gray-400">effort</span>
+                        <div class="text-mpak-gray-900">{level.effort}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+
+        <a
+          href="/security/controls/"
+          class="inline-flex items-center gap-2 mt-6 text-sm font-medium text-accent-gold-400 hover:text-accent-gold-500"
+        >
+          View all 25 controls
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+      </section>
+
+      <section class="mb-20">
+        <h2 class="text-sm font-mono text-mpak-gray-500 uppercase tracking-wider mb-3">
+          Security Domains
+        </h2>
+        <p class="text-2xl font-semibold text-mpak-gray-900 mb-10">
+          Five areas of security coverage
+        </p>
+
+        <div
+          class="grid gap-px bg-white/[0.06] rounded-lg overflow-hidden sm:grid-cols-2 lg:grid-cols-3"
+        >
+          {
+            DOMAINS.map((domain) => (
+              <div class="bg-surface-raised p-6 hover:bg-surface-overlay transition-colors">
+                <div class="flex items-start gap-4">
+                  <DomainIcon domain={domain.id} class="w-6 h-6 text-mpak-gray-400 shrink-0 mt-0.5" />
+                  <div>
+                    <div class="flex items-center gap-2 mb-1">
+                      <h3 class="font-semibold text-mpak-gray-900">{domain.name}</h3>
+                      <span class="font-mono text-xs text-mpak-gray-400">{domain.abbrev}</span>
+                    </div>
+                    <p class="text-sm text-mpak-gray-600 leading-relaxed">{domain.description}</p>
+                  </div>
+                </div>
+              </div>
+            ))
+          }
+          <div class="hidden lg:block bg-surface"></div>
+        </div>
+      </section>
+
+      <section class="mb-20">
+        <div class="flex items-center gap-3 mb-3">
+          <h2 class="text-sm font-mono text-mpak-gray-500 uppercase tracking-wider">
+            MCP-Specific Controls
+          </h2>
+          <span
+            class="px-2 py-0.5 bg-terminal-error/10 text-terminal-error text-xs font-mono rounded"
+          >
+            AI attack surface
+          </span>
+        </div>
+        <p class="text-2xl font-semibold text-mpak-gray-900 mb-10 max-w-2xl">
+          Traditional security tools don't understand these threats. We built controls specifically
+          for MCP and AI workflows.
+        </p>
+
+        <div class="grid gap-6 sm:grid-cols-2">
+          {
+            MCP_CONTROLS.map((control) => (
+              <div class="relative bg-surface-raised border border-white/[0.08] rounded-lg p-6 overflow-hidden">
+                <div
+                  class="absolute inset-0 opacity-5"
+                  style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 20px 20px;"
+                />
+
+                <div class="relative">
+                  <div class="flex items-center justify-between mb-3">
+                    <span class="font-mono text-sm text-terminal-error">{control.id}</span>
+                    <span class="font-mono text-xs text-mpak-gray-500">{control.level}</span>
+                  </div>
+                  <h3 class="font-semibold text-lg mb-2 text-mpak-gray-900">{control.name}</h3>
+                  <p class="text-mpak-gray-600 text-sm leading-relaxed">{control.desc}</p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="mb-20">
+        <h2 class="text-sm font-mono text-mpak-gray-500 uppercase tracking-wider mb-3">
+          Using Certification
+        </h2>
+        <div class="grid gap-12 sm:grid-cols-2 mt-8">
+          <div>
+            <h3 class="text-xl font-semibold text-mpak-gray-900 mb-6">For Consumers</h3>
+            <ol class="space-y-4">
+              {
+                CONSUMER_STEPS.map((step, i) => (
+                  <li class="flex gap-4">
+                    <span class="shrink-0 w-6 h-6 rounded-full bg-surface-overlay text-mpak-gray-600 font-mono text-sm flex items-center justify-center">
+                      {i + 1}
+                    </span>
+                    <span class="text-mpak-gray-700 pt-0.5">{step}</span>
+                  </li>
+                ))
+              }
+            </ol>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold text-mpak-gray-900 mb-6">For Publishers</h3>
+            <ol class="space-y-4">
+              {
+                PUBLISHER_STEPS.map((step, i) => (
+                  <li class="flex gap-4">
+                    <span class="shrink-0 w-6 h-6 rounded-full bg-surface-overlay text-mpak-gray-600 font-mono text-sm flex items-center justify-center">
+                      {i + 1}
+                    </span>
+                    <span class="text-mpak-gray-700 pt-0.5">{step}</span>
+                  </li>
+                ))
+              }
+            </ol>
+            <a
+              href={CERTIFICATION_DOC}
+              class="inline-flex items-center gap-2 mt-6 text-sm font-medium text-accent-gold-400 hover:text-accent-gold-500"
+            >
+              Read the publisher guide
+              <span aria-hidden="true">&rarr;</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="relative bg-surface-raised border border-white/[0.08] rounded-xl p-8 sm:p-12 overflow-hidden"
+      >
+        <div
+          class="absolute inset-0 opacity-10"
+          style="background-image: radial-gradient(circle at 1px 1px, #fff 1px, transparent 0); background-size: 24px 24px;"
+        >
+        </div>
+
+        <div
+          class="relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
+        >
+          <div>
+            <h3 class="text-xl font-semibold text-mpak-gray-900 mb-2">Browse Certified Bundles</h3>
+            <p class="text-mpak-gray-600">Find bundles that meet your security requirements.</p>
+          </div>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <a
+              href="/bundles/"
+              class="px-5 py-2.5 bg-accent-gold-400 text-mpak-dark font-semibold rounded-lg hover:bg-accent-gold-500 transition-colors text-center"
+            >
+              Browse Bundles
+            </a>
+            <a
+              href={siteConfig.github.repo}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="px-5 py-2.5 text-mpak-gray-900 font-medium rounded-lg border border-white/[0.1] hover:bg-white/5 transition-colors text-center"
+            >
+              View on GitHub
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <div
+        class="mt-12 pt-8 border-t border-white/[0.08] flex flex-wrap gap-x-6 gap-y-2 text-sm text-mpak-gray-500"
+      >
+        <a
+          href="https://mpaktrust.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:text-mpak-gray-700"
+        >
+          Full MTF Specification
+        </a>
+        <a href={CERTIFICATION_DOC} class="hover:text-mpak-gray-700">Publisher Guide</a>
+        <a href="/contact/" class="hover:text-mpak-gray-700">Report Security Issue</a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

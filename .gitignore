@@ -1,0 +1,24 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# agent worktrees, which nest a full copy of the repo and would otherwise be
+# committed by `git add -A` and collected twice by vitest. Scoped to the
+# worktrees dir so project agent config under .claude/ stays committable.
+.claude/worktrees/
+
+# environment
+.env
+.env.production
+
+# macOS
+.DS_Store
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
