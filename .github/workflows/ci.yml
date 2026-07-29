@@ -28,6 +28,9 @@ jobs:
 
       - run: npm run build
 
+      # Depends on the build output, so it runs after rather than beside it.
+      - run: npm run check:links
+
       - run: npm run check
 
       - run: npm test

@@ -14,23 +14,19 @@ nginx origin, and this site is not attached to it. The split below happens at cu
 | `registry.mpak.dev` | `/`, `/bundles`, `/packages/*`, `/login`, `/my-packages` — and the API at `/app`, `/v1`, `/v0.1` | `mpak/code` → `apps/web` |
 | `docs.mpak.dev` | 301 to `mpak.dev/docs` ([mpak#163](https://github.com/NimbleBrainInc/mpak/issues/163)) | — |
 
-**This site's links into the registry are still root-relative and must be migrated first.**
-Every page's nav emits `href="/bundles/"` and `href="/login/"`, and two badge snippets in the
-docs point at `https://mpak.dev/packages/…`. Those resolve today because one origin serves
-everything. Once `mpak.dev` is Pages, they land on a host with no such routes — the nav breaks
-on all nine pages, and the badge snippets keep sending publishers to a 404 from their own
-READMEs long after. The registry app already does this correctly in the other direction
-(`siteConfig.marketingUrl`); this side has no counterpart yet.
+Links from here into the registry are absolute, via `siteConfig.registryUrl` — the mirror of
+`siteConfig.marketingUrl` on the app side. A root-relative `/bundles/` would resolve against
+this site, which has no such route, and 404 the moment the apex is Pages. `npm run
+check:links` fails the build on any that creep back, including the docs badge snippets that
+publishers paste into their own READMEs.
 
 > [!WARNING]
-> Two preconditions before `mpak.dev` points at Pages, in order:
+> Before `mpak.dev` points at Pages, **the registry must answer on its own host** — this
+> returns the app, not a 404:
 >
-> 1. **The registry links here are absolute.** No `href="/bundles/"` or `href="/login/"` left
->    in the build, and the docs badge snippets name `registry.mpak.dev`.
-> 2. **The registry answers on its own host** — this returns the app, not a 404:
->    ```
->    curl -sI https://registry.mpak.dev/packages/@nimblebraininc/echo
->    ```
+> ```
+> curl -sI https://registry.mpak.dev/packages/@nimblebraininc/echo
+> ```
 >
 > Then attach the custom domain *and* repoint DNS. Attaching alone does not move traffic;
 > the DNS record is what does, and either step is reversible on a 60-second TTL.

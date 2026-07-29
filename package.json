@@ -10,7 +10,8 @@
     "preview": "astro preview",
     "check": "astro check",
     "astro": "astro",
-    "test": "vitest run"
+    "test": "vitest run",
+    "check:links": "node scripts/check-registry-links.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
