@@ -2,9 +2,12 @@
 
 /* =============================================================================
    Workshop Design System - mpak.dev
-   Dark theme accented in gold. The registry app pairs gold with a purple token
-   ramp for skills; nothing here uses it, so the only purple that survives is
-   the raw literal in the ambient body glow below.
+   Dark theme with dual-accent system: Gold (bundles/security) + Purple (accents)
+
+   The @theme block below is byte-identical to apps/web/src/index.css. Keep it
+   that way: a visitor crosses the routing boundary between the two origins
+   without a reload, so the tokens have to agree. Unused tokens cost nothing —
+   Tailwind prunes them from the build — so there is no reason to trim it.
    ============================================================================= */
 
 @theme {
@@ -19,8 +22,21 @@
   --color-accent-gold-glow: rgba(245, 158, 11, 0.12);
   --color-accent-gold-border: rgba(245, 158, 11, 0.25);
 
-  /* --- Status accents --- */
+  /* --- Accent Purple (accents) --- */
+  --color-accent-purple: #8b5cf6;
+  --color-accent-purple-50: #f5f3ff;
+  --color-accent-purple-100: #ede9fe;
+  --color-accent-purple-200: #ddd6fe;
+  --color-accent-purple-300: #c4b5fd;
+  --color-accent-purple-400: #a78bfa;
+  --color-accent-purple-500: #8b5cf6;
+  --color-accent-purple-600: #7c3aed;
+  --color-accent-purple-glow: rgba(139, 92, 246, 0.12);
+  --color-accent-purple-border: rgba(139, 92, 246, 0.25);
+
+  /* --- Status accents (kept for compatibility) --- */
   --color-accent-cyan: #06b6d4;
+  --color-accent-teal: #14b8a6;
   --color-accent-emerald: #10b981;
 
   /* --- Terminal colors --- */
@@ -59,6 +75,7 @@
 
   /* --- Custom animations --- */
   --animate-cursor-blink: blink 1s step-end infinite;
+  --animate-fade-in-up: fadeInUp 0.6s ease-out;
 }
 
 /* =============================================================================
@@ -73,6 +90,17 @@
   51%,
   100% {
     opacity: 0;
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

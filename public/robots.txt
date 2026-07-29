@@ -51,7 +51,9 @@ Allow: /
 # Apple
 User-agent: Applebot
 Allow: /
-Applebot-Extended: Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
 
 # Cohere
 User-agent: cohere-ai
@@ -62,7 +64,11 @@ User-agent: FacebookBot
 Allow: /
 
 # Two sitemaps, one per origin. This site generates sitemap-index.xml for the
-# marketing and docs routes; the registry app owns sitemap.xml, which carries
-# the package pages. Listing only one would drop the other origin's URLs.
+# marketing and docs routes; the registry app owns sitemap.xml, which is what
+# carries the package pages. Listing only one would drop the other's URLs.
+#
+# The registry sitemap also still lists the marketing URLs this site takes
+# over, so until those are pruned from it at cutover both files advertise the
+# same seven pages.
 Sitemap: https://mpak.dev/sitemap-index.xml
 Sitemap: https://mpak.dev/sitemap.xml
