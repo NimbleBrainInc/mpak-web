@@ -8,12 +8,19 @@
  * it needs a check rather than a convention: the failure appears all at once, at
  * cutover, on pages nobody thought to re-read.
  *
- * Stated as a resolution rule rather than a list of bad shapes. A denylist can
- * only refuse what someone thought to enumerate, and the first version of this
- * script proved the point — it passed a build containing three broken links
- * because they arrived in an `action=` attribute and a JSON-LD string rather
- * than the `href=` it knew about. Asking "does this resolve?" has nothing to
- * keep current.
+ * Stated as a resolution rule rather than a list of bad paths. A denylist can
+ * only refuse what someone thought to enumerate, and the first version proved
+ * the point — it passed a build containing four broken links, because it read
+ * only `href=` in `.html` files and they arrived in an `action=` attribute, a
+ * JSON-LD string, and two `.txt` files.
+ *
+ * What that bought is a predicate with no path list. It did not buy full
+ * coverage: the carriers below are still an enumeration, so a link in some
+ * other attribute goes unseen. Widening the pattern is not the fix — at this
+ * layer a link-bearing attribute is indistinguishable from a code sample in the
+ * docs, and the obvious generalization red-lights five legitimate pages where
+ * Starlight stores copy-button text in an attribute. Telling those apart means
+ * parsing HTML.
  */
 import { readdir, readFile, stat } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -53,7 +60,9 @@ async function resolves(pathname) {
   const target = join(DIST, clean);
   if (await exists(target)) return true;
   if (await exists(join(target, 'index.html'))) return true;
-  // `/404/` is emitted as 404.html rather than a directory.
+  // Astro emits the 404 page as 404.html rather than a directory, and that page
+  // links to itself — so this branch has a caller, despite trailingSlash making
+  // every other page a directory index.
   return exists(`${target.replace(/\/$/, '')}.html`);
 }
 

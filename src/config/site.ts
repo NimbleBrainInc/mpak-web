@@ -24,9 +24,7 @@ export const SITE_URL = 'https://mpak.dev';
  * The mirror of `siteConfig.marketingUrl` in the registry app, which points the
  * other way.
  */
-export const REGISTRY_URL = (
-  env.PUBLIC_REGISTRY_URL ?? 'https://registry.mpak.dev'
-).replace(/\/$/, '');
+export const REGISTRY_URL = 'https://registry.mpak.dev';
 
 /**
  * Web font stylesheet, shared by the marketing layout and the Starlight docs

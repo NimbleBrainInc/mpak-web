@@ -18,11 +18,13 @@ Links from here into the registry are absolute, via `siteConfig.registryUrl` —
 `siteConfig.marketingUrl` on the app side. A root-relative `/bundles/` would resolve against
 this site, which has no such route, and 404 the moment the apex is Pages.
 
-`npm run check:links` asserts that every internal link in `dist/` — root-relative or written
-against `mpak.dev` — resolves to a file the build actually produced. It is a resolution rule
-rather than a list of known-bad paths, because a list only refuses what someone thought to
-enumerate: the first version of this check passed a build containing three broken links,
-having been taught about `href=` but not `action=` or JSON-LD.
+`npm run check:links` asserts that every `href`, `action`, and `src` in `dist/`, plus anything
+written against `mpak.dev`, resolves to a file the build produced. Being a resolution rule
+rather than a list of known-bad paths is what removed the path list — the first version passed
+a build containing four broken links, having been taught `href=` but not `action=`, JSON-LD, or
+`.txt` files at all. The carrier list is still an enumeration, so a link arriving in some other
+attribute is not covered; widening the regex is not the fix, because at that layer a
+link-bearing attribute and a code sample in the docs are indistinguishable.
 
 > [!WARNING]
 > Before `mpak.dev` points at Pages, **the registry must answer on its own host** — this
@@ -54,14 +56,11 @@ npm run test     # vitest — JSON-LD builders
 npm run preview
 ```
 
-Links to app-owned routes (`/bundles/`, `/login/`) 404 in local dev. That is expected — they
-resolve only where the edge routing is in place.
-
 ## Structure
 
 ```
 src/
-  config/site.ts        operator identity, GitHub links (PUBLIC_ env overridable)
+  config/site.ts        registry + marketing origins, operator identity, GitHub links
   components/           shared marketing components
   content/docs/docs/    Starlight content, nested so routes land under /docs/
   layouts/BaseLayout    header, footer, and per-page SEO metadata
