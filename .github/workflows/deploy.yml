@@ -35,7 +35,8 @@ jobs:
         with:
           path: dist
           # v5 excludes hidden files by default; keep v3's include-everything
-          # behavior so Pagefind's index ships.
+          # behavior. Nothing in the build is hidden today — this is insurance
+          # against something that is.
           include-hidden-files: true
 
   deploy:

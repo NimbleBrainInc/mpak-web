@@ -3,14 +3,25 @@
 Marketing site and documentation for [mpak.dev](https://mpak.dev). Astro static output.
 
 The registry application — package pages, browse, and the authenticated console — lives in
-[NimbleBrainInc/mpak](https://github.com/NimbleBrainInc/mpak) under `apps/web`. Both are served
-from `mpak.dev` behind path-based routing, so links between them are root-relative.
+[NimbleBrainInc/mpak](https://github.com/NimbleBrainInc/mpak) under `apps/web`.
 
-| Path | Served by |
-| --- | --- |
-| `/`, `/about`, `/contact`, `/privacy`, `/terms`, `/security*`, `/publish*` | this repo |
-| `/docs/*` | this repo (Starlight) |
-| `/packages/*`, `/bundles`, `/login`, `/my-packages` | `mpak/code` → `apps/web` |
+**Target state, not yet live.** `mpak.dev` today serves the registry application from a single
+nginx origin, and this site is not attached to it. The split below happens at cutover:
+
+| Host | Serves | From |
+| --- | --- | --- |
+| `mpak.dev` | `/`, `/about`, `/contact`, `/privacy`, `/terms`, `/security*`, `/publish*`, `/docs/*` | this repo, via GitHub Pages |
+| `registry.mpak.dev` | `/`, `/packages/*`, `/login`, `/my-packages` — and the API at `/app`, `/v1`, `/v0.1` | `mpak/code` → `apps/web` |
+| `docs.mpak.dev` | 301 to `mpak.dev/docs` | — |
+
+Because the two live on different hosts, links from here into the registry are absolute
+(`siteConfig.marketingUrl`'s counterpart on the app side), not root-relative.
+
+> [!WARNING]
+> Do not attach `mpak.dev` in Settings → Pages before the registry has moved to
+> `registry.mpak.dev`. GitHub Pages cannot proxy, so this repo's build would answer
+> `/packages/*` and `/login` with its own 404 and the product would go dark. The move is
+> [mpak#164](https://github.com/NimbleBrainInc/mpak/pull/164).
 
 ## Develop
 
