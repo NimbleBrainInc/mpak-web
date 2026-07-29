@@ -18,10 +18,16 @@ Because the two live on different hosts, links from here into the registry are a
 (`siteConfig.marketingUrl`'s counterpart on the app side), not root-relative.
 
 > [!WARNING]
-> Do not attach `mpak.dev` in Settings → Pages before the registry has moved to
-> `registry.mpak.dev`. GitHub Pages cannot proxy, so this repo's build would answer
-> `/packages/*` and `/login` with its own 404 and the product would go dark. The move is
-> [mpak#164](https://github.com/NimbleBrainInc/mpak/pull/164).
+> Do not attach `mpak.dev` in Settings → Pages until this returns the registry, not a 404:
+>
+> ```
+> curl -sI https://registry.mpak.dev/packages/@nimblebraininc/echo
+> ```
+>
+> GitHub Pages cannot proxy, so while `mpak.dev` still serves the registry, attaching it
+> makes this repo's build answer `/packages/*` and `/login` with its own 404 and the
+> product goes dark. The check is the deploy, not a merge — the code that moves the
+> registry is merged well before the pods are running it.
 
 ## Develop
 
