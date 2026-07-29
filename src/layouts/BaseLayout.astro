@@ -22,7 +22,7 @@ const schemaBlocks = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
 const year = new Date().getFullYear();
 
 const navLinks = [
-  { href: '/bundles/', label: 'Bundles', accent: true },
+  { href: `${siteConfig.registryUrl}/`, label: 'Bundles', accent: true },
   { href: '/publish/', label: 'Publish', accent: true },
   { href: '/docs/', label: 'Docs', accent: false },
 ];
@@ -125,12 +125,12 @@ const navLinks = [
               </a>
               <div class="w-px h-5 bg-white/[0.08]" aria-hidden="true"></div>
               <a
-                href="/login/"
+                href={`${siteConfig.registryUrl}/login/`}
                 class="text-sm font-medium text-mpak-gray-600 hover:text-mpak-gray-900 transition-colors"
                 >Sign In</a
               >
               <a
-                href="/login/"
+                href={`${siteConfig.registryUrl}/login/`}
                 class="px-4 py-2 text-sm font-semibold text-mpak-dark bg-accent-gold-400 rounded-lg hover:bg-accent-gold-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:scale-105 transition-all"
                 >Sign Up</a
               >
@@ -206,12 +206,12 @@ const navLinks = [
             >
             <div class="pt-3 border-t border-white/[0.08] flex flex-col space-y-3">
               <a
-                href="/login/"
+                href={`${siteConfig.registryUrl}/login/`}
                 class="text-sm font-medium text-mpak-gray-600 hover:text-mpak-gray-900 transition-colors"
                 >Sign In</a
               >
               <a
-                href="/login/"
+                href={`${siteConfig.registryUrl}/login/`}
                 class="px-4 py-2 text-sm font-semibold text-mpak-dark bg-accent-gold-400 rounded-lg hover:bg-accent-gold-500 transition-all text-center"
                 >Sign Up</a
               >

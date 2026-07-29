@@ -17,6 +17,16 @@ const env = import.meta.env;
 export const SITE_URL = 'https://mpak.dev';
 
 /**
+ * The registry application: package pages, browse, and the signed-in console.
+ * A different host, so links to it must be absolute — a root-relative
+ * `/bundles/` resolves against this site, which has no such route.
+ *
+ * The mirror of `siteConfig.marketingUrl` in the registry app, which points the
+ * other way.
+ */
+export const REGISTRY_URL = 'https://registry.mpak.dev';
+
+/**
  * Web font stylesheet, shared by the marketing layout and the Starlight docs
  * config so both sides of the routing boundary paint text the same way.
  */
@@ -25,6 +35,7 @@ export const FONTS_HREF =
 
 export const siteConfig = {
   siteUrl: SITE_URL,
+  registryUrl: REGISTRY_URL,
   // Docs are same-site now, so this is a path rather than an absolute URL.
   // No trailing slash: callers append their own (`${docsUrl}/bundles/manifest/`).
   docsUrl: '/docs',

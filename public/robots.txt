@@ -63,12 +63,9 @@ Allow: /
 User-agent: FacebookBot
 Allow: /
 
-# Two sitemaps, one per origin. This site generates sitemap-index.xml for the
-# marketing and docs routes; the registry app owns sitemap.xml, which is what
-# carries the package pages. Listing only one would drop the other's URLs.
-#
-# The registry sitemap also still lists the marketing URLs this site takes
-# over, so until those are pruned from it at cutover both files advertise the
-# same seven pages.
+# One sitemap per origin, both declared here. This site generates
+# sitemap-index.xml for the marketing and docs routes; the registry serves the
+# package half at sitemap-packages.xml on its own host. They do not overlap, and
+# listing only one would drop the other's URLs.
 Sitemap: https://mpak.dev/sitemap-index.xml
-Sitemap: https://mpak.dev/sitemap.xml
+Sitemap: https://registry.mpak.dev/sitemap-packages.xml

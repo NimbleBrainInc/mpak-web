@@ -1,4 +1,4 @@
-import { SITE_URL, siteConfig } from '../config/site';
+import { REGISTRY_URL, SITE_URL, siteConfig } from '../config/site';
 
 const BASE_URL = SITE_URL;
 
@@ -66,7 +66,7 @@ export function generateWebSiteSchema() {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: `${BASE_URL}/bundles/?search={search_term_string}`,
+        urlTemplate: `${REGISTRY_URL}/?search={search_term_string}`,
       },
       'query-input': 'required name=search_term_string',
     },

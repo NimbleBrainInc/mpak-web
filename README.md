@@ -14,23 +14,25 @@ nginx origin, and this site is not attached to it. The split below happens at cu
 | `registry.mpak.dev` | `/`, `/bundles`, `/packages/*`, `/login`, `/my-packages` — and the API at `/app`, `/v1`, `/v0.1` | `mpak/code` → `apps/web` |
 | `docs.mpak.dev` | 301 to `mpak.dev/docs` ([mpak#163](https://github.com/NimbleBrainInc/mpak/issues/163)) | — |
 
-**This site's links into the registry are still root-relative and must be migrated first.**
-Every page's nav emits `href="/bundles/"` and `href="/login/"`, and two badge snippets in the
-docs point at `https://mpak.dev/packages/…`. Those resolve today because one origin serves
-everything. Once `mpak.dev` is Pages, they land on a host with no such routes — the nav breaks
-on all nine pages, and the badge snippets keep sending publishers to a 404 from their own
-READMEs long after. The registry app already does this correctly in the other direction
-(`siteConfig.marketingUrl`); this side has no counterpart yet.
+Links from here into the registry are absolute, via `siteConfig.registryUrl` — the mirror of
+`siteConfig.marketingUrl` on the app side. A root-relative `/bundles/` would resolve against
+this site, which has no such route, and 404 the moment the apex is Pages.
+
+`npm run check:links` asserts that every `href`, `action`, and `src` in `dist/`, plus anything
+written against `mpak.dev`, resolves to a file the build produced. Being a resolution rule
+rather than a list of known-bad paths is what removed the path list — the first version passed
+a build containing four broken links, having been taught `href=` but not `action=`, JSON-LD, or
+`.txt` files at all. The carrier list is still an enumeration, so a link arriving in some other
+attribute is not covered; widening the regex is not the fix, because at that layer a
+link-bearing attribute and a code sample in the docs are indistinguishable.
 
 > [!WARNING]
-> Two preconditions before `mpak.dev` points at Pages, in order:
+> Before `mpak.dev` points at Pages, **the registry must answer on its own host** — this
+> returns the app, not a 404:
 >
-> 1. **The registry links here are absolute.** No `href="/bundles/"` or `href="/login/"` left
->    in the build, and the docs badge snippets name `registry.mpak.dev`.
-> 2. **The registry answers on its own host** — this returns the app, not a 404:
->    ```
->    curl -sI https://registry.mpak.dev/packages/@nimblebraininc/echo
->    ```
+> ```
+> curl -sI https://registry.mpak.dev/packages/@nimblebraininc/echo
+> ```
 >
 > Then attach the custom domain *and* repoint DNS. Attaching alone does not move traffic;
 > the DNS record is what does, and either step is reversible on a 60-second TTL.
@@ -54,14 +56,11 @@ npm run test     # vitest — JSON-LD builders
 npm run preview
 ```
 
-Links to app-owned routes (`/bundles/`, `/login/`) 404 in local dev. That is expected — they
-resolve only where the edge routing is in place.
-
 ## Structure
 
 ```
 src/
-  config/site.ts        operator identity, GitHub links (PUBLIC_ env overridable)
+  config/site.ts        registry + marketing origins, operator identity, GitHub links
   components/           shared marketing components
   content/docs/docs/    Starlight content, nested so routes land under /docs/
   layouts/BaseLayout    header, footer, and per-page SEO metadata
