@@ -16,9 +16,13 @@ nginx origin, and this site is not attached to it. The split below happens at cu
 
 Links from here into the registry are absolute, via `siteConfig.registryUrl` — the mirror of
 `siteConfig.marketingUrl` on the app side. A root-relative `/bundles/` would resolve against
-this site, which has no such route, and 404 the moment the apex is Pages. `npm run
-check:links` fails the build on any that creep back, including the docs badge snippets that
-publishers paste into their own READMEs.
+this site, which has no such route, and 404 the moment the apex is Pages.
+
+`npm run check:links` asserts that every internal link in `dist/` — root-relative or written
+against `mpak.dev` — resolves to a file the build actually produced. It is a resolution rule
+rather than a list of known-bad paths, because a list only refuses what someone thought to
+enumerate: the first version of this check passed a build containing three broken links,
+having been taught about `href=` but not `action=` or JSON-LD.
 
 > [!WARNING]
 > Before `mpak.dev` points at Pages, **the registry must answer on its own host** — this

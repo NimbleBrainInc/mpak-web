@@ -46,7 +46,7 @@ Publishers add a `manifest.json` to their MCP server repo and the `mcpb-pack` Gi
 
 ## Documentation
 
-- [Browse Bundles](https://mpak.dev/bundles/): Search and discover MCP server bundles
+- [Browse Bundles](https://registry.mpak.dev/): Search and discover MCP server bundles
 - [Security Certification](https://mpak.dev/security/): MTF certification levels and security domains
 - [Publish Bundles](https://mpak.dev/publish/bundles/): Guide to publishing MCP servers
 - [Full Documentation](https://mpak.dev/docs/): Complete mpak documentation

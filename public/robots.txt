@@ -71,4 +71,4 @@ Allow: /
 # over, so until those are pruned from it at cutover both files advertise the
 # same seven pages.
 Sitemap: https://mpak.dev/sitemap-index.xml
-Sitemap: https://mpak.dev/sitemap.xml
+Sitemap: https://registry.mpak.dev/sitemap-packages.xml

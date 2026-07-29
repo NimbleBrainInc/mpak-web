@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { SITE_URL, siteConfig } from '../config/site';
+import { REGISTRY_URL, SITE_URL, siteConfig } from '../config/site';
 import {
   generateBreadcrumbSchema,
   generateCLIToolSchema,
@@ -112,7 +112,7 @@ describe('search target', () => {
   it('points the SearchAction at the app-owned browse route', () => {
     const schema = generateWebSiteSchema();
     expect(schema.potentialAction.target.urlTemplate).toBe(
-      `${SITE_URL}/bundles/?search={search_term_string}`,
+      `${REGISTRY_URL}/?search={search_term_string}`,
     );
   });
 

@@ -32,6 +32,10 @@ jobs:
 
       - run: npm run build
 
+      # The deploy path gates on this too. ci.yml also runs it, but that races
+      # this workflow on a push to main rather than gating it.
+      - run: npm run check:links
+
       - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
