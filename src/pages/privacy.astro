@@ -12,14 +12,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Privacy Policy' }]} />
 
     <h1 class="text-4xl font-bold text-mpak-gray-900 mb-2">Privacy Policy</h1>
-    <p class="text-sm text-mpak-gray-500 mb-12">Last updated: February 9, 2026</p>
+    <p class="text-sm text-mpak-gray-500 mb-12">Last updated: July 29, 2026</p>
 
     <div class="space-y-10 text-mpak-gray-600">
       <section>
         <h2 class="text-xl font-semibold text-mpak-gray-900 mb-3">Who we are</h2>
         <p>
           mpak is operated by {siteConfig.operator.name} ("{siteConfig.operator.shortName}", "we",
-          "us"). This policy covers the mpak.dev website and the mpak CLI tool.
+          "us"). This policy covers the mpak.dev website, the registry at registry.mpak.dev, and the
+          mpak CLI tool.
         </p>
       </section>
 
@@ -43,13 +44,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <strong class="text-mpak-gray-800">Server logs:</strong> Our servers log IP addresses and
             request metadata for security and abuse prevention. Logs are retained for 30 days.
           </li>
+          <li>
+            <strong class="text-mpak-gray-800">Site analytics:</strong> The registry at
+            registry.mpak.dev loads Google Tag Manager to measure aggregate usage, such as which
+            pages are visited. This may set cookies in your browser. The mpak.dev website and the
+            CLI do not load it.
+          </li>
         </ul>
       </section>
 
       <section>
         <h2 class="text-xl font-semibold text-mpak-gray-900 mb-3">What we don't collect</h2>
         <ul class="list-disc pl-5 space-y-2">
-          <li>We don't use tracking cookies or third-party analytics.</li>
           <li>We don't sell or share personal data with third parties.</li>
           <li>We don't track which packages you install.</li>
         </ul>
@@ -74,6 +80,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </li>
           <li>
             <strong class="text-mpak-gray-800">AWS</strong> for hosting and package storage.
+          </li>
+          <li>
+            <strong class="text-mpak-gray-800">Google Tag Manager</strong> for aggregate usage
+            analytics on the registry.
           </li>
         </ul>
         <p class="mt-2">
