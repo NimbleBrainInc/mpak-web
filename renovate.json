@@ -1,0 +1,31 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "local>NimbleBrainInc/renovate-config"
+  ],
+  "description": "An Astro site, deployed by every merge to main, so each Renovate PR is a deploy. Managers: npm (package.json and package-lock.json) and GitHub Actions. The workflows set Node in setup-node's node-version input, which no manager reads, so Node moves by hand. Lock-file refreshes stay off (the shared default): npm cannot hold a refresh to the 14-day wait.",
+  "enabledManagers": [
+    "npm",
+    "github-actions"
+  ],
+  "packageRules": [
+    {
+      "description": "One weekly PR for the non-major npm updates, so the site gets at most one routine deploy a week from Renovate.",
+      "matchManagers": [
+        "npm"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "groupName": "site dependencies"
+    },
+    {
+      "description": "astro check needs TypeScript's programmatic compiler API, which TypeScript 7's native compiler does not expose (README, Develop).",
+      "matchPackageNames": [
+        "typescript"
+      ],
+      "allowedVersions": "<7"
+    }
+  ]
+}
